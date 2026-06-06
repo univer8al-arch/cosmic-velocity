@@ -1,0 +1,29 @@
+name: Build Windows EXE
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        pip install numpy matplotlib pyinstaller
+
+    - name: Build EXE
+      run: |
+        pyinstaller --onefile --windowed cosmic_velocity.py
+
+    - name: Upload EXE
+      uses: actions/upload-artifact@v2
+      with:
+        name: cosmic_velocity
+        path: dist/cosmic_velocity.exe
